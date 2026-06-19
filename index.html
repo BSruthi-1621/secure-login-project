@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Secure Login System</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body{
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background: linear-gradient(135deg,#1e3c72,#2a5298);
+        }
+
+        .container{
+            width:400px;
+            background:white;
+            padding:30px;
+            border-radius:15px;
+            box-shadow:0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        h2{
+            text-align:center;
+            margin-bottom:20px;
+        }
+
+        input{
+            width:100%;
+            padding:12px;
+            margin:8px 0;
+            border:1px solid #ccc;
+            border-radius:8px;
+        }
+
+        button{
+            width:100%;
+            padding:12px;
+            margin-top:10px;
+            border:none;
+            border-radius:8px;
+            background:#2a5298;
+            color:white;
+            font-size:16px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#1e3c72;
+        }
+
+        p{
+            text-align:center;
+            margin-top:15px;
+        }
+
+        a{
+            color:#2a5298;
+            cursor:pointer;
+            text-decoration:none;
+            font-weight:bold;
+        }
+
+        .hidden{
+            display:none;
+        }
+
+        #message{
+            text-align:center;
+            margin-top:10px;
+            font-weight:bold;
+        }
+
+        .welcome-btn{
+            margin-top:15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Welcome Page -->
+    <div id="home">
+        <h2>🔐 Secure Access Portal</h2>
+        <button class="welcome-btn" onclick="showLogin()">Login</button>
+        <button class="welcome-btn" onclick="showRegister()">Register</button>
+    </div>
+
+    <!-- Register Page -->
+    <div id="register" class="hidden">
+        <h2>Create Account</h2>
+
+        <input type="text" id="regName" placeholder="Full Name">
+        <input type="text" id="regUser" placeholder="Username">
+        <input type="password" id="regPass" placeholder="Password">
+
+        <button onclick="register()">Register</button>
+
+        <p>
+            Already have an account?
+            <a onclick="showLogin()">Login</a>
+        </p>
+    </div>
+
+    <!-- Login Page -->
+    <div id="login" class="hidden">
+        <h2>Secure Login</h2>
+
+        <input type="text" id="loginUser" placeholder="Username">
+        <input type="password" id="loginPass" placeholder="Password">
+
+        <button onclick="login()">Login</button>
+
+        <p>
+            New User?
+            <a onclick="showRegister()">Register</a>
+        </p>
+
+        <div id="message"></div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="hidden">
+        <h2>Welcome!</h2>
+        <p>Login Successful ✅</p>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+</div>
+
+<script>
+
+function hideAll(){
+    document.getElementById("home").classList.add("hidden");
+    document.getElementById("register").classList.add("hidden");
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("dashboard").classList.add("hidden");
+}
+
+function showLogin(){
+    hideAll();
+    document.getElementById("login").classList.remove("hidden");
+}
+
+function showRegister(){
+    hideAll();
+    document.getElementById("register").classList.remove("hidden");
+}
+
+function register(){
+
+    let username=document.getElementById("regUser").value;
+    let password=document.getElementById("regPass").value;
+
+    if(username==="" || password===""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    localStorage.setItem("username",username);
+    localStorage.setItem("password",password);
+
+    alert("Registration Successful! Please Login.");
+
+    showLogin();
+}
+
+function login(){
+
+    let user=document.getElementById("loginUser").value;
+    let pass=document.getElementById("loginPass").value;
+
+    let savedUser=localStorage.getItem("username");
+    let savedPass=localStorage.getItem("password");
+
+    if(user===savedUser && pass===savedPass){
+
+        hideAll();
+        document.getElementById("dashboard").classList.remove("hidden");
+
+    }else{
+        document.getElementById("message").innerHTML=
+        "❌ Invalid Username or Password";
+    }
+}
+
+function logout(){
+    hideAll();
+    document.getElementById("home").classList.remove("hidden");
+}
+
+</script>
+
+</body>
+</html>
